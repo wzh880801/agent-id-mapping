@@ -32,6 +32,9 @@ module.exports = {
             if (resp.data.next_page_token) {
                 resp = await client.queryRecords('tenant', ['_id', 'tenant_id', "_name"], order_by, true, resp.data.next_page_token);
             }
+            else {
+                break;
+            }
         }
 
         return result;
@@ -102,6 +105,9 @@ module.exports = {
             if (resp.data.next_page_token) {
                 resp = await client.queryRecords('tenant', ['_id', 'tenant_id', "_name"], filter, order_by, true, resp.data.next_page_token);
             }
+            else {
+                break;
+            }
         }
 
         return result;
@@ -131,6 +137,9 @@ module.exports = {
 
             if (resp.data.next_page_token) {
                 resp = await client.queryRecords('solution', ['_id', 'name', "namespcae"], order_by, true, resp.data.next_page_token);
+            }
+            else {
+                break;
             }
         }
 
@@ -201,6 +210,9 @@ module.exports = {
 
             if (resp.data.next_page_token) {
                 resp = await client.queryRecords('solution', ['_id', 'name', "namespcae"], filter, order_by, true, resp.data.next_page_token);
+            }
+            else {
+                break;
             }
         }
 
