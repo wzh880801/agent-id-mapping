@@ -176,7 +176,8 @@ app.get('/tenant/list', async (req, res) => {
     }
 
     if (is_sort) {
-        result = linq.from(result).orderBy(x => x.name).toArray();
+        // result = linq.from(result).orderBy(x => x.name).toArray();
+        result = result.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
     }
 
     res.json(result);
@@ -251,7 +252,8 @@ app.get('/app/list', async (req, res) => {
     }
 
     if(is_sort) {
-        result = linq.from(result).orderBy(x => x.name).toArray();
+        // 使用 localeCompare 方法按照中文拼音首字母排序
+        result = result.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
     }
 
     res.json(result);
