@@ -12,10 +12,12 @@ module.exports = {
      * @returns {Promise<Array<import('../data').IEntityInfo>>}
      */
     get_all_tanants: async function () {
-        const order_by = {
-            field: "_id",
-            direction: "asc"
-        };
+        const order_by = [
+            {
+                field: "_id",
+                direction: "asc"
+            }
+        ];
 
         let result = [];
         let resp = await client.queryRecords('tenant', ['_id', 'tenant_id', "_name"], null, order_by, true, '');
@@ -59,10 +61,12 @@ module.exports = {
             }
         }
 
-        const order_by = {
-            field: "_id",
-            direction: "asc"
-        };
+        const order_by = [
+            {
+                field: "_id",
+                direction: "asc"
+            }
+        ];
         const filter = {
             conditions: [
                 {
@@ -108,10 +112,12 @@ module.exports = {
      * @returns {Promise<Array<import('../data').IEntityInfo>>}
      */
     get_all_namespaces: async function () {
-        const order_by = {
-            field: "_id",
-            direction: "asc"
-        };
+        const order_by = [
+            {
+                field: "_id",
+                direction: "asc"
+            }
+        ];
 
         let result = [];
         let resp = await client.queryRecords('solution', ['_id', 'name', "namespcae"], null, order_by, true, '');
@@ -155,10 +161,12 @@ module.exports = {
             }
         }
 
-        const order_by = {
-            field: "_id",
-            direction: "asc"
-        };
+        const order_by = [
+            {
+                field: "_id",
+                direction: "asc"
+            }
+        ];
         const filter = {
             conditions: [
                 {

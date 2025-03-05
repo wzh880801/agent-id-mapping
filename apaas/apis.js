@@ -1,5 +1,13 @@
 const { auth } = require('./auth');
 const { axios } = require('../axiosBase');
+const logger = require('../log/log_helper_v2').default().useFile(__filename).useSingleAppendMode();
+
+function parseResponse(response) {
+    if (response && response.code !== '0') {
+        logger.error(response);
+    }
+    return response;
+}
 
 var ApiClient = /** @class */ (function () {
 
@@ -41,7 +49,7 @@ var ApiClient = /** @class */ (function () {
             }
         });
 
-        return resp.data;
+        return parseResponse(resp.data);
     };
 
     /**
@@ -91,7 +99,7 @@ var ApiClient = /** @class */ (function () {
             data: body
         });
 
-        return resp.data;
+        return parseResponse(resp.data);
     };
 
     return ApiClient;
