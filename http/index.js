@@ -123,6 +123,8 @@ app.get('/tenant/list', async (req, res) => {
     if (filter) {
         _logger.info(`filter=${filter}`);
     }
+    const is_sort = req.query['sort'] === 'true' || req.query['sort'] === '1';
+    const is_name_with_id = req.query['name_with_id'] === 'true' || req.query['name_with_id'] === '1';
 
     const all_tenant_ids = await get_tenant_ids_from_prom(filter);
     if (!all_tenant_ids) {
@@ -169,6 +171,14 @@ app.get('/tenant/list', async (req, res) => {
         }
     }
 
+    if (is_name_with_id) {
+        result = linq.from(result).select(x => { return { id: x.id, name: `${x.name}(${x.id})` } }).toArray();
+    }
+
+    if (is_sort) {
+        result = linq.from(result).orderBy(x => x.name).toArray();
+    }
+
     res.json(result);
 })
 
@@ -187,6 +197,9 @@ app.get('/app/list', async (req, res) => {
     if (filter) {
         _logger.info(`filter=${filter}`);
     }
+
+    const is_sort = req.query['sort'] === 'true' || req.query['sort'] === '1';
+    const is_name_with_id = req.query['name_with_id'] === 'true' || req.query['name_with_id'] === '1';
 
     const all_namespaces = await get_namespaces_from_prom(filter);
     if (!all_namespaces) {
@@ -233,8 +246,15 @@ app.get('/app/list', async (req, res) => {
         }
     }
 
-    res.json(result);
+    if(is_name_with_id) {
+        result = linq.from(result).select(x => { return { id: x.id, name: `${x.name}(${x.id})` } }).toArray();
+    }
 
+    if(is_sort) {
+        result = linq.from(result).orderBy(x => x.name).toArray();
+    }
+
+    res.json(result);
 })
 
 /* 监听端口 */
