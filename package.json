@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
+    "linq": "^3.2.4",
+    "uuid": "^9.0.1",
+    "express": "^4.21.1",
+    "cors": "^2.8.5",
+    "axios": "^1.7.9"
+  },
+  "devDependencies": {
+    "@types/uuid": "^10.0.0"
+  }
+}

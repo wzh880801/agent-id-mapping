@@ -1,0 +1,19 @@
+
+const {
+    PROM_SERVER_URL,
+    HTTP_ENDPOINT_PORT,
+    LOKI_API_URL, LOKI_API_KEY,
+    CLIENT_ID,
+    CLIENT_SECRET,
+    NAMESPACE
+} = process.env;
+
+module.exports = {
+    PROM_SERVER_URL: !PROM_SERVER_URL ? 'http://127.0.0.1:9090' : (PROM_SERVER_URL.toLowerCase().startsWith('http') ? PROM_SERVER_URL : `http://${PROM_SERVER_URL}`),
+    HTTP_ENDPOINT_PORT: HTTP_ENDPOINT_PORT ? HTTP_ENDPOINT_PORT : 33445,
+    LOKI_API_URL,
+    LOKI_API_KEY,
+    CLIENT_ID,
+    CLIENT_SECRET,
+    NAMESPACE
+}

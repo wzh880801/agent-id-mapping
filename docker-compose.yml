@@ -1,0 +1,33 @@
+# networks:
+#   apaas-ob-network:
+#     # external: true
+#     driver: bridge
+#     ipam:
+#       driver: default
+#       config:
+#         - subnet: 172.18.0.0/16
+#           gateway: 172.18.10.1
+
+services:
+
+  agent-id-mapping:
+    image: galaxy/agent-id-mapping:latest
+    container_name: agent-id-mapping
+    network_mode: host
+    #   networks:
+    #     apaas-ob-network:
+    #       ipv4_address: 172.18.10.10
+    environment:
+      - PROM_SERVER_URL=http://127.0.0.1:9090
+      - HTTP_ENDPOINT_PORT=33445
+      - LOKI_API_URL=
+      - LOKI_API_KEY=
+      - CLIENT_ID=
+      - CLIENT_SECRET=
+      - NAMESPACE=
+
+    volumes:
+      - ./logs:/var/logs/agent-id-mapping
+    # ports:
+    #   - 33445:33445
+    restart: unless-stopped
