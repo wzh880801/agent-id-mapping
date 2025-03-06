@@ -288,3 +288,9 @@ setTimeout(async () => {
     await get_tenant_info_and_update_cache(await get_tenant_ids_from_prom());
     await get_app_info_and_update_cache(await get_namespaces_from_prom());
 }, 1000);
+
+// 定时刷新缓存
+setInterval(async () => {
+    await get_tenant_info_and_update_cache(await get_tenant_ids_from_prom());
+    await get_app_info_and_update_cache(await get_namespaces_from_prom());
+}, 60 * 1000 * 10);

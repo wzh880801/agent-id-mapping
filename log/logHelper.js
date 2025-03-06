@@ -300,7 +300,9 @@ var LogHelper = /** @class */ (function () {
         if (!fs.existsSync(this.logPath)) {
             fs.mkdirSync(this.logPath, { recursive: true });
         }
-        var log_file = this.logPath + "/" + moment().format('YYYY-MM-DD') + ".txt";
+    
+        var log_file = this.getLogFileName();
+    
         fs.appendFile(log_file, ts_bj + "\t" + log_level + "\t" + log_str + "\n", function (err) {
             if (err) {
                 console.log(err);
@@ -315,6 +317,47 @@ var LogHelper = /** @class */ (function () {
         }
         this.report_log(new Date(ts_bj).getTime(), log_level, labels, __metadatas, _log_obj, function (data, err) {
         });
+    };
+    
+    // 获取下一个日志文件的编号
+    LogHelper.prototype.getFileNumber = function () {
+        if (!fs.existsSync(this.logPath)) {
+            fs.mkdirSync(this.logPath, { recursive: true });
+            return 0;
+        }
+
+        var files = fs.readdirSync(this.logPath);
+        var currentDate = moment().format('YYYY-MM-DD');
+        var maxNumber = 0;
+        for (const file of files) {
+            var match = file.match(new RegExp("^" + currentDate + "-([0-9]+)\\.txt$"));
+            if (match) {
+                var number = parseInt(match[1], 10);
+                if (number > maxNumber) {
+                    maxNumber = number;
+                }
+            }
+        }
+        return maxNumber;
+    };
+    
+    // 根据编号生成日志文件名
+    LogHelper.prototype.getLogFileName = function () {
+        var currentDate = moment().format('YYYY-MM-DD');
+        var number = this.getFileNumber();
+
+        var log_file = this.logPath + "/" + currentDate + "-" + String(number).padStart(3, '0') + ".txt";
+
+        // 检查文件大小
+        if (fs.existsSync(log_file)) {
+            var stats = fs.statSync(log_file);
+            if (stats.size >= 10 * 1024 * 1024) { // 10MB
+                number++;
+                return this.logPath + "/" + currentDate + "-" + String(number).padStart(3, '0') + ".txt";
+            } 
+        }
+
+        return log_file;
     };
     return LogHelper;
 }());
