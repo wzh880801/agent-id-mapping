@@ -282,3 +282,9 @@ app.get('/app/list', async (req, res) => {
 app.listen(HTTP_ENDPOINT_PORT, () => {
     logger.info(`listening: ${HTTP_ENDPOINT_PORT}`);
 })
+
+// 启动时先查询一次 prom 接口，初始化缓存
+setTimeout(async () => {
+    await get_tenant_info_and_update_cache(await get_tenant_ids_from_prom());
+    await get_app_info_and_update_cache(await get_namespaces_from_prom());
+}, 1000);
