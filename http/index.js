@@ -172,7 +172,13 @@ app.get('/tenant/list', async (req, res) => {
     }
 
     if (is_name_with_id) {
-        result = linq.from(result).select(x => { return { id: x.id, name: `${x.name}(${x.id})` } }).toArray();
+        result = linq.from(result)
+            .select(x => {
+                return {
+                    id: x.id,
+                    name: x.id !== x.name ? `${x.name}(${x.id})` : x.name
+                }
+            }).toArray();
     }
 
     if (is_sort) {
@@ -248,7 +254,13 @@ app.get('/app/list', async (req, res) => {
     }
 
     if(is_name_with_id) {
-        result = linq.from(result).select(x => { return { id: x.id, name: `${x.name}(${x.id})` } }).toArray();
+        result = linq.from(result)
+            .select(x => {
+                return {
+                    id: x.id,
+                    name: x.id !== x.name ? `${x.name}(${x.id})` : x.name
+                }
+            }).toArray();
     }
 
     if(is_sort) {
