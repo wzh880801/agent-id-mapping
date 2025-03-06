@@ -5,6 +5,7 @@
 //     tenant -> 根据 tenant_id 查询下面有哪些 app
 //     namespace -> 查看下面有哪些 tenant_id
 const linq = require('linq');
+const py = require('tiny-pinyin');
 const logger = require('../log/log_helper_v2').default().useFile(__filename).useSingleAppendMode();
 const { HTTP_ENDPOINT_PORT } = require('../config');
 
@@ -183,7 +184,10 @@ app.get('/tenant/list', async (req, res) => {
 
     if (is_sort) {
         // result = linq.from(result).orderBy(x => x.name).toArray();
-        result = result.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
+        result = result.sort((a, b) => {
+            // 比较排序
+            return py.convertToPinyin(a.name).localeCompare(py.convertToPinyin(b.name));
+        });
     }
 
     res.json(result);
@@ -264,8 +268,11 @@ app.get('/app/list', async (req, res) => {
     }
 
     if(is_sort) {
-        // 使用 localeCompare 方法按照中文拼音首字母排序
-        result = result.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
+        // 使用 localeCompare 方法按照英文首字母和中文拼音首字母进行排序
+        result = result.sort((a, b) => {
+            // 比较排序
+            return py.convertToPinyin(a.name).localeCompare(py.convertToPinyin(b.name));
+        });
     }
 
     res.json(result);
