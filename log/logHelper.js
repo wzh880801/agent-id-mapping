@@ -327,7 +327,7 @@ var LogHelper = /** @class */ (function () {
         }
 
         var files = fs.readdirSync(this.logPath);
-        var currentDate = moment().format('YYYY-MM-DD');
+        var currentDate = this.getBJDate();
         var maxNumber = 0;
         for (const file of files) {
             var match = file.match(new RegExp("^" + currentDate + "-([0-9]+)\\.txt$"));
@@ -340,10 +340,14 @@ var LogHelper = /** @class */ (function () {
         }
         return maxNumber;
     };
+
+    LogHelper.prototype.getBJDate = function () {
+        return moment().tz("Asia/Shanghai").format('YYYY-MM-DD');
+    };
     
     // 根据编号生成日志文件名
     LogHelper.prototype.getLogFileName = function () {
-        var currentDate = moment().format('YYYY-MM-DD');
+        var currentDate = this.getBJDate();
         var number = this.getFileNumber();
 
         var log_file = this.logPath + "/" + currentDate + "-" + String(number).padStart(3, '0') + ".txt";
